@@ -1,0 +1,23 @@
+version: '1.0'
+services:
+  dind:
+    image: docker:dind
+    privileged: true
+    expose:
+      - 2375
+      - 2376
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    volumes:
+      - .:/playground:rw
+
+  nextflow:
+    build: .
+    privileged: true
+    volumes:
+      - .:/playground:rw
+    entrypoint: sleep 365d
+    links:
+      - dind
+    environment:
+      DOCKER_HOST: tcp://dind:2375/
