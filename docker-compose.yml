@@ -1,4 +1,6 @@
 version: '1.0'
+name: nextflow
+
 services:
   dind:
     image: docker:dind
@@ -9,13 +11,14 @@ services:
     environment:
       DOCKER_TLS_CERTDIR: ""
     volumes:
-      - .:/playground:rw
+      - ..:/workspace:rw
 
   nextflow:
     build: .
     privileged: true
     volumes:
-      - .:/playground:rw
+      - ..:/workspace:rw
+    working_dir: /workspace
     entrypoint: sleep 365d
     links:
       - dind
